@@ -23,6 +23,6 @@ bootstrap:
   - VTK
   - VTK-module
 build:
-  - "{{boostrap}}"
-manifest
+  - "{{bootstrap}}"
+manifest:
   - "{{build}}"

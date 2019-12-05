@@ -1,7 +1,9 @@
+!include /opt/rcic/include/rcic-package.yaml
 ---
 - package: llvm 
   name: llvm
-  version: 8.0.1
+  versions: !include versions.yaml
+  version: "{{versions.llvm}}"
   extension: src.tar.xz
   vendor_source: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version }}/llvm-{{ version }}.{{ extension }}
   description: >
@@ -16,11 +18,9 @@
     configure_args: 
     modules: 
       - foundation 
-      - gcc/8.3.0
+      - gcc/{{versions.gcc}}
     pkgmake: cmake
     target: --build builddir
   install:
     makeinstall: (cd builddir; {{ build.pkgmake }} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(ROOT)/{{ root }} -P cmake_install.cmake) 
     installextra: $(INSTALL) -m 644  README* LICENSE $(ROOT)/{{ root }}
-  files:
-    -  "{{ root }}"

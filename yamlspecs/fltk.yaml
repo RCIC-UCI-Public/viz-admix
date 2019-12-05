@@ -2,7 +2,8 @@
 ---
 - package: fltk - fulltick stack GUI Toolkit 
   name:  fltk 
-  version: "1.3.5"
+  versions: !include versions.yaml
+  version: "{{versions.fltk}}"
   vendor_source: https://www.fltk.org/pub/fltk/{{version}}/{{src_tarball}}
   src_tarball: "{{name}}-{{version}}-source.{{extension}}"
   description: |
@@ -14,11 +15,11 @@
     FLTK is designed to be small and modular enough to be statically linked, but works fine as a shared library. 
     FLTK also includes an excellent UI builder called FLUID that can be used to create applications in minutes.
   build:
-    modules: mesa/19.2.6
+    modules: mesa/{{versions.mesa}}
   install:
      makeinstall: >
        make prefix={{ root }} DESTDIR=$(ROOT) install
      installextra: $(INSTALL) -m 644  README* COPYING AUTHORS $(ROOT){{ root }} 
   requires:
-    - mesa_19.2.6
+    - mesa_{{versions.mesa}}
   rpm: !include rpm.extras.yaml

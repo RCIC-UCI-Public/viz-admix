@@ -6,3 +6,5 @@
   module:
     prereq:
       - mesa/{{versions.mesa}}
+    setenv:
+      - MESA_GL_VERSION_OVERRIDE 3.2

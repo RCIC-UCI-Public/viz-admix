@@ -1,8 +1,9 @@
+!include /opt/rcic/include/rcic-package.yaml
 ---
 - package: libdrm 
   name: libdrm 
-  version: "2.4.100" 
-  extension: tar.gz
+  versions: !include versions.yaml
+  version: "{{verisons.libdrm}}"
   vendor_source: https://dri.freedesktop.org/libdrm/{{ name }}-{{ version }}.{{ extension }}
   description: >
     libdrm {{ version }}. Direct rendering manager platform  
@@ -13,7 +14,7 @@
     configure_args: --prefix={{ root }} {{ builddir }}
     modules: 
       - foundation 
-      - python/3.8.0
+      - python/{{versions.python}}
     pkgmake: ninja 
     target: -C {{ builddir }} 
   install:

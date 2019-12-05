@@ -2,7 +2,8 @@
 ---
 - package: mesa 
   name: mesa 
-  version: "19.2.6" 
+  versions: !include versions.yaml
+  version: "{{versions.mesa}}" 
   vendor_source: https://mesa.freedesktop.org/archive/{{name}}-{{version}}.{{extension}}
   extension: tar.xz
   description: |
@@ -25,9 +26,9 @@
         {{builddir}}/
     modules: 
       - foundation 
-      - python/3.8.0
-      - llvm/8.0.1
-      - libdrm/2.4.100
+      - python/{{versions.python}}
+      - llvm/{{versions.llvm}}
+      - libdrm/{{versions.libdrm}}
     pkgmake: ninja 
     target: -C {{ builddir }}/ 
   install:
