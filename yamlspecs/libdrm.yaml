@@ -3,7 +3,7 @@
 - package: libdrm 
   name: libdrm 
   versions: !include versions.yaml
-  version: "{{verisons.libdrm}}"
+  version: "{{versions.libdrm}}"
   vendor_source: https://dri.freedesktop.org/libdrm/{{ name }}-{{ version }}.{{ extension }}
   description: >
     libdrm {{ version }}. Direct rendering manager platform  
