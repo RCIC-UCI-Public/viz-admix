@@ -1,0 +1,13 @@
+!include VTK.yaml
+!include /opt/rcic/include/rcic-module.yaml
+---
+- package: VTK Module 
+  category: TOOLS
+  module:
+    prepend_path:
+      - "{{pkg_defaults.module.prepend_path}}"
+      - LD_LIBRARY_PATH {{ root }}/lib64
+      - PKG_CONFIG_PATH {{ root }}/lib64/pkg_config
+      - PYTHONPATH {{ root }}/lib/python2.7/site-packages
+    prereq:
+      - mesa/19.2.6

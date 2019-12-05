@@ -1,0 +1,16 @@
+!include fltk.yaml
+!include /opt/rcic/include/rcic-module.yaml
+---
+- package: fltk module 
+  category: LIBRARIES
+  module:
+    prepend_path:
+      - "{{ pkg_defaults.module.prepend_path }}"
+      - -d " " LDFLAGS "-Wl,--no-as-needed -ldl -lpng15"
+      - -d " " LDFLAGS "-L{{root}}/{{module.lib}}"
+      - -d " " CFLAGS "-I{{root}}/include"
+      - -d " " CXXFLAGS "-I{{root}}/include"
+      - -d " " CPPFLAGS "-I{{root}}/include"
+      
+    prereq:
+      - mesa/19.2.6

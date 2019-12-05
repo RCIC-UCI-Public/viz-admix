@@ -1,0 +1,13 @@
+!include libdrm.yaml
+!include /opt/rcic/include/rcic-module.yaml
+---
+- package: libdrm module 
+  category: LIBRARIES
+  module:
+    lib: lib64
+    prepend_path:
+      - "{{ pkg_defaults.module.prepend_path }}"
+      - -d " " LDFLAGS "-L{{root}}/{{module.lib}}"
+      - -d " " CFLAGS "-I{{root}}/include -I{{root}}/include/libdrm -I{{root}}/include/libkms"
+      - -d " " CXXFLAGS "-I{{root}}/include -I{{root}}/include/libdrm -I{{root}}/include/libkms"
+      - -d " " CPPFLAGS "-I{{root}}/include -I{{root}}/include/libdrm -I{{root}}/include/libkms"

@@ -1,0 +1,26 @@
+---
+- package: llvm 
+  name: llvm
+  version: 8.0.1
+  extension: src.tar.xz
+  vendor_source: https://github.com/llvm/llvm-project/releases/download/llvmorg-{{ version }}/llvm-{{ version }}.{{ extension }}
+  description: >
+    LLVM version {{ version }}.  The LLVM Project is a collection of modular and reusable compiler 
+    and toolchain technologies. Despite its name, LLVM has little to do with traditional virtual machines. 
+    The name \"LLVM\" itself is not an acronym; it is the full name of the project.
+  root: "{{ pkg_defaults.app_path }}/{{ name }}/{{ version }}"
+  src_dir: "{{ name }}-{{ version }}.src"
+  build:
+    cmake_args: -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX={{ root }} -DLLVM_BUILD_LLVM_DYLIB=True  -DLLVM_ENABLE_RTTI=True
+    configure: (mkdir builddir; cd builddir; cmake {{ build.cmake_args }} ..)
+    configure_args: 
+    modules: 
+      - foundation 
+      - gcc/8.3.0
+    pkgmake: cmake
+    target: --build builddir
+  install:
+    makeinstall: (cd builddir; {{ build.pkgmake }} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(ROOT)/{{ root }} -P cmake_install.cmake) 
+    installextra: $(INSTALL) -m 644  README* LICENSE $(ROOT)/{{ root }}
+  files:
+    -  "{{ root }}"

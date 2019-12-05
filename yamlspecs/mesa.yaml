@@ -1,0 +1,34 @@
+!include /opt/rcic/include/rcic-package.yaml
+---
+- package: mesa 
+  name: mesa 
+  version: "19.2.6" 
+  vendor_source: https://mesa.freedesktop.org/archive/{{name}}-{{version}}.{{extension}}
+  extension: tar.xz
+  description: |
+    Mesa {{ version }}.  The Mesa project began as an open-source implementation of the 
+    OpenGL specification - a system for rendering interactive 3D graphics.
+    Over the years the project has grown to implement more graphics APIs, including OpenGL ES (versions 1, 2, 3), 
+    OpenCL, OpenMAX, VDPAU, VA API, XvMC and Vulkan.
+  builddir: build
+  build:
+    configure: meson 
+    configure_args: > 
+        --prefix={{ root }} 
+        -D buildtype=release 
+        -D dri-drivers=""
+        -D gallium-drivers="swrast"
+        -D gallium-nine=false
+        -D glx=gallium-xlib
+        -D osmesa=gallium
+        -D valgrind=false
+        {{builddir}}/
+    modules: 
+      - foundation 
+      - python/3.8.0
+      - llvm/8.0.1
+      - libdrm/2.4.100
+    pkgmake: ninja 
+    target: -C {{ builddir }}/ 
+  install:
+    makeinstall:  DESTDIR=$(ROOT) {{ build.pkgmake }} -C {{ builddir }}/ install

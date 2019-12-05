@@ -1,0 +1,23 @@
+---
+- package: libdrm 
+  name: libdrm 
+  version: "2.4.100" 
+  extension: tar.gz
+  vendor_source: https://dri.freedesktop.org/libdrm/{{ name }}-{{ version }}.{{ extension }}
+  description: >
+    libdrm {{ version }}. Direct rendering manager platform  
+  root: "{{ pkg_defaults.app_path }}/{{ name }}/{{ version }}"
+  builddir: build
+  build:
+    configure: meson 
+    configure_args: --prefix={{ root }} {{ builddir }}
+    modules: 
+      - foundation 
+      - python/3.8.0
+    pkgmake: ninja 
+    target: -C {{ builddir }} 
+  install:
+    makeinstall:  DESTDIR=$(ROOT) {{ build.pkgmake }} -C {{ builddir }} install
+    installextra: $(INSTALL) -m 644  README* LICENSE $(ROOT)/{{ root }}
+  files:
+    -  "{{ root }}"

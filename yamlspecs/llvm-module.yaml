@@ -1,0 +1,13 @@
+!include llvm.yaml
+!include /opt/rcic/include/rcic-module.yaml
+---
+- package: llvm module 
+  category: COMPILERS
+  module:
+    prereq: 
+      - gcc/8.3.0
+      - llvm/8.0.1
+  requires:
+    - llvm_8.0.1-module
+    - gcc_8.3.0-module
+    - "{{name}}_{{version}}"

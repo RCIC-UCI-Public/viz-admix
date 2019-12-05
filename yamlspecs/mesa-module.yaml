@@ -1,0 +1,17 @@
+!include mesa.yaml
+!include /opt/rcic/include/rcic-module.yaml
+---
+- package: mesa module 
+  category: LIBRARIES
+  module:
+    lib: lib64
+    prepend_path:
+      - "{{ pkg_defaults.module.prepend_path }}"
+      - -d " " LDFLAGS "-L{{root}}/{{module.lib}}"
+      - -d " " CFLAGS "-I{{root}}/include"
+      - -d " " CXXFLAGS "-I{{root}}/include"
+      - -d " " CPPFLAGS "-I{{root}}/include"
+    prereq:
+      - libdrm
+      - gcc/8.3.0
+      - llvm/8.0.1

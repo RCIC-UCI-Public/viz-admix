@@ -1,0 +1,28 @@
+---
+system:
+  - elfutils-libelf-devel
+  - gnutls-devel
+  - libjpeg-turbo-devel
+  - libXfont2-devel
+  - libxkbfile-devel
+  - libxshmfence-devel
+  - pam-devel
+  - xorg-x11-xtrans-devel 
+  - xorg-x11-server-source
+bootstrap:
+  - libdrm
+  - libdrm-module  
+  - llvm
+  - llvm-module  
+  - mesa
+  - mesa-module  
+  - fltk
+  - fltk-module
+  - tigervnc
+  - tigervnc-module 
+  - VTK
+  - VTK-module
+build:
+  - "{{boostrap}}"
+manifest
+  - "{{build}}"

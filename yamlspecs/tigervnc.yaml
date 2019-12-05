@@ -1,0 +1,53 @@
+!include /opt/rcic/include/rcic-package.yaml
+---
+- package: tigervnc vncserver and client
+  name: tigervnc 
+  versions: !include versions.yaml
+  version: "{{ versions.tigervnc}}"
+  vendor_source: https://github.com/TigerVNC/tigervnc/archive/v{{version}}.{{extension}}
+  description: |
+    tigervnc version {{ version }}. 
+    Virtual Network Computing (VNC) is a remote display system which allows you to view and interact with a 
+    virtual desktop environment that is running on another computer on the network. Using VNC, you can run 
+    graphical applications on a remote machine and send only the display from these applications to your local machine. 
+    VNC is platform-independent and supports a wide variety of operating systems and architectures as both servers and clients.
+
+    TigerVNC is a high-speed version of VNC based on the RealVNC 4 and X.org code bases. TigerVNC started as a 
+    next-generation development effort for TightVNC on Unix and Linux platforms, but it split from its parent 
+    project in early 2009 so that TightVNC could focus on Windows platforms. TigerVNC supports a variant of Tight 
+    encoding that is greatly accelerated by the use of the libjpeg-turbo JPEG codec.
+
+  # This is a more complicated build using a combination of cmake, autoreconf, and configure. Just following 
+  # the instructions from the developer. 
+  xsource: /usr/share/xorg-x11-server-source
+  xpatch: xserver120.patch
+  build:
+    configure: "Echo no configure. complex build." 
+    modules: 
+      - foundation
+      - fltk/{{versions.fltk}}
+    pkgmake: > 
+      cmake -DCMAKE_INSTALL_PREFIX={{root}} .;
+      /bin/cp -R  {{xsource}}/* unix/xserver;
+      make;
+      cd unix/xserver; /usr/bin/patch  -p1 < ../{{xpatch}};
+      autoreconf -fiv;
+      ./configure --with-pic --without-dtrace --disable-static --disable-dri  --disable-xinerama 
+      --disable-xvfb --disable-xnest --disable-xorg --disable-dmx --disable-xwin --disable-xephyr 
+      --disable-kdrive --disable-config-dbus --disable-config-hal --disable-config-udev --disable-dri2 
+      --enable-install-libxf86config --enable-glx --with-default-font-path='catalogue:/etc/X11/fontpath.d,built-ins' 
+      --with-fontdir=/usr/share/X11/fonts --with-xkb-path=/usr/share/X11/xkb --with-xkb-output=/var/lib/xkb 
+      --with-xkb-bin-directory=/usr/bin --with-serverconfig-path=/usr/lib64/xorg --with-dri-driver-path=/usr/lib64/dri 
+      --disable-xwayland --prefix={{root}};
+      make
+    target: 
+  install:
+     makeinstall: >
+       make DESTDIR=$(ROOT) install;
+       cd unix/xserver; make DESTDIR=$(ROOT) install
+     installextra: $(INSTALL) -m 644  README* COPYING AUTHORS $(ROOT){{ root }} 
+  files:
+     - "{{parent}}"
+     - /usr/lib*/xorg/*
+     - /var/lib/xkb/*
+  rpm: !include rpm.extras.yaml

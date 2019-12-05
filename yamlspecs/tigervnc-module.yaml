@@ -1,0 +1,8 @@
+!include tigervnc.yaml
+!include /opt/rcic/include/rcic-module.yaml
+---
+- package: tigervnc module 
+  category: TOOLS
+  module:
+    prereq:
+      - mesa/{{versions.mesa}}
